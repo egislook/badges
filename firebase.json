@@ -1,6 +1,5 @@
 {
   "hosting": {
-    "public": "public",
     "rewrites": [
       {
         "source": "/test", 
@@ -11,7 +10,7 @@
         "function": "test2"
       },
       {
-        "source": "/*",
+        "source": "!(.)",
         "function": "root"
       }
     ]
