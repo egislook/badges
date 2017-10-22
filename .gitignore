@@ -1,1 +1,3 @@
 /functions/node_modules
+
+//firebase serve -o $IP -p $PORT --only hosting,functions
