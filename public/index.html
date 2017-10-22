@@ -1,0 +1,63 @@
+<html>
+	<head>
+	  <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<!-- for Google -->
+		<meta name="description" content={ META.description } />
+		<meta name="author" content={ META.author } />
+		<meta name="copyright" content="{ META.title }. All Rights Reserved." />
+		<meta name="application-name" content={ META.title } />
+		<!-- for Facebook -->
+		<meta property="og:title" content={ META.title } />
+		<meta property="og:image" content={ META.image } />
+		<meta property="og:url" content={ META.url } />
+		<meta property="og:description" content={ META.description } />
+		<!-- for Twitter -->
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={ META.title } />
+		<meta name="twitter:description" content={ META.description } />
+		<meta name="twitter:image" content={ META.image } />
+		<!-- favicon -->
+		<link rel="shortcut icon" type="image/x-icon" href={ META.favicon } />
+		<!-- stylesheets -->
+		<link rel="stylesheet" href="https://cdn.rawgit.com/noneedsystem/fuico/0.0.8/style.css">
+		<!-- <link rel="stylesheet" href="/assets/css/style.css"> -->
+		<!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:100,300,400,500">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600"> -->
+		<!-- prefetch -->
+		<!--<link rel="prefetch" href="/content">-->
+
+		<title>{ META.title }</title>
+
+	</head>
+
+	<body class="prim:pink sec:teal err:red600 warn:yellow ok:green txt:black100 fw:300 fs:15px md-fs:16px lh:1.3 bg:f1f1f1">
+	  <app></app>
+
+		<!-- js libraries -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.2/lodash.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/riot/3.7.2/riot.min.js"></script>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/riot-route/3.1.1/route.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/riot/3.7.2/riot+compiler.min.js"></script>
+		<script type="text/javascript" src="https://cdn.rawgit.com/noneedsystem/fucss/0.6.8/fucss.js"></script>
+		<!-- riot components -->
+		<script type="riot/tag" src="./app/app.tag.html"></script>
+		<!--<script if={VIEWS} each={view in VIEWS} type="riot/tag" src={view} defer></script>-->
+		<!-- mixins -->
+		<!--<script type="text/javascript" src="./assets/mixins/store.mixin.js" defer></script>-->
+		<!--<script type="text/javascript" src="./assets/mixins/tag.mixin.js" defer></script>-->
+		<!-- stores -->
+		<!--<script type="text/javascript" src="./assets/stores/app.store.js" defer></script>-->
+		<!-- init -->
+		<!--<script type="text/javascript" src="./assets/scripts/init.js" defer></script>-->
+
+		<script>
+		  riot.mount('app');
+		// 	this.mixin('store');
+		// 	this.META 	= this.getMeta();
+		// 	this.VIEWS  = opts.VIEWS;
+		</script>
+
+	</body>
+
+</html>
