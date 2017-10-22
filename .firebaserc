@@ -3,5 +3,3 @@
     "default": "hello-dfff9"
   }
 }
-
-/*firebase serve -o $IP -p $PORT*/
