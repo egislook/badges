@@ -8,22 +8,69 @@ const path    = require('path');
 exports.render        = render;
 exports.renderHTML    = renderHTML;
 exports.clientRequire = clientRequire;
-exports.requireViews  = requireViews;
+exports.initViews     = initViews;
+exports.initMixins    = initMixins;
 exports.compileRiot   = compileRiot;
 
 
-function render(dir = '../public', opts = {}){
+function render(dir = './public', opts = {}){
   //console.log(dir);
-  return requireViews(dir)
-    .then((views) => views.paths.map(path => path.replace(dir, '.')))
-    .then((VIEWS) => renderHTML(Object.assign(opts, { VIEWS })));
+  return initActions(dir + '/action')
+    .then((actions) => actions.map(path => path.replace(dir, '.')))
+    .then((ACTIONS) => 
+      initMixins(dir + '/mixin')
+        .then((mixins) => mixins.map(path => path.replace(dir, '.')))
+        .then((MIXINS) => 
+          initViews(dir)
+            .then((views) => views.paths.map(path => path.replace(dir, '.')))
+            .then((VIEWS) => renderHTML(Object.assign(opts, { VIEWS, MIXINS, ACTIONS })))
+        )
+    );
+}
+
+function initMixins(dir = './public/mixin'){
+  return readDir(path.resolve(dir)).then((files) => 
+    files.map((filename) => {
+      let _filePath = `${path.resolve(dir)}/${filename}`;
+      riot.mixin(
+        filename.split('.')[1], 
+        clientRequire(_filePath), 
+        filename.indexOf('global') >= 0
+      )
+      return _filePath;
+    })
+  );
+}
+
+function initActions(dir = './public/action'){
+  return readDir(path.resolve(dir)).then((files) => 
+    files.map((filename) => {
+      let _filePath = `${path.resolve(dir)}/${filename}`;
+      return _filePath;
+    })
+  );
+}
+
+function initViews(dir, skipViewFiles){
+  const viewPaths = [];
+  
+  return collectViews(dir, viewPaths).then(() => {
+    return Promise
+      .all(viewPaths.slice(0).map(compileRiot))
+      .then((viewNames) => ({ 
+        paths: viewPaths, 
+        names: viewNames 
+      }));
+  });
 }
 
 function renderHTML(opts = {}, tagName = 'html'){
   return  `
     <!DOCTYPE html> 
     ${riot.render(tagName, opts)}
-    <script>riot.mount('app');</script>
+    <script>
+      riot.mount('app');
+    </script>
   `;
 }
 
@@ -47,26 +94,13 @@ function clientRequire(filePath, code, include){
   return m.exports;
 }
 
-function requireViews(dir, skipViewFiles){
-  const viewPaths = [];
-  
-  return collectFiles(dir, viewPaths).then(() => {
-    return Promise
-      .all(viewPaths.slice(0).map(compileRiot))
-      .then((viewNames) => ({ 
-        paths: viewPaths, 
-        names: viewNames 
-      }));
-  });
-}
-
 function readDir(dir){
   return new Promise((resolve, reject) => {
     fs.readdir(dir, (err, files) => err ? reject(err) : resolve(files));
   });
 }
 
-function collectFiles(dir, views){
+function collectViews(dir, views){
   return new Promise((resolve, reject) => {
     readDir(dir).then((files) => 
       Promise.all(files.map((filename) => storeFilePath(filename, dir, views)))
@@ -74,7 +108,7 @@ function collectFiles(dir, views){
   });
 }
 
-function validate(filePath, extensions = ['html', 'tag']){
+function validateView(filePath, extensions = ['html', 'tag']){
   return extensions.indexOf(filePath.split('.').pop()) >= 0
 }
 
@@ -83,10 +117,10 @@ function validate(filePath, extensions = ['html', 'tag']){
   let _fileStats  = fs.lstatSync(_filePath);
   
   if(!!_fileStats.isDirectory())
-    return collectFiles(_filePath, views);
+    return collectViews(_filePath, views);
   
    
-  validate(_filePath) && views.push(_filePath);
+  validateView(_filePath) && views.push(_filePath);
   
   return _filePath;
 }

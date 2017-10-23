@@ -1,17 +1,17 @@
 <app>
   <div>
     <nav class="w:100pc ps:fx bg:white t:0 bs:1">
-      <a class="p:10px" href={_link(route)} each={route in routes}>{ route.name }</a>
+      <a class="p:10px" href={_link(route)} onclick={ POINACT('setRoute', route) } each={route in routes}>{ route.name }</a>
     </nav>
     
     <main class="dp:flx ai:c h:100vh">
       <div data-is={page}></div>
     </main>
     
-    <comp-splash splash={splash && page}></comp-splash>
   </div>
   
   <script>
+    this.mixin('poinact');
   
     this.default = {
       page: 'main',
@@ -36,10 +36,10 @@
     
     this._link = (route) => route.link || route.main && '/' || '/' + route.name;
     
-    console.log('CLIENT');
-    
     //console.log(window);
     if(typeof module !== 'object'){
+      console.log('CLIENT');
+      
       window.route((page) => {
         let query = new URLSearchParams(window.location.search);
         tag.update({ 

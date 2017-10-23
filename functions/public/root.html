@@ -39,9 +39,13 @@
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/riot-route/3.1.1/route.min.js" defer></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/riot/3.7.2/riot+compiler.min.js" defer></script>
 		<script type="text/javascript" src="https://cdn.rawgit.com/noneedsystem/fucss/0.6.8/fucss.js" defer></script>
+		
+		<!-- actions -->
+		<script if={ACTIONS} each={action in ACTIONS} type="text/javascript" src={action} defer></script>
+		<!-- mixins -->
+		<script if={MIXINS} each={mix in MIXINS} type="text/javascript" src={mix} defer></script>
 		<!-- riot components -->
 		<script if={VIEWS} each={view in VIEWS} type="riot/tag" src={view} defer></script>
-		<!-- mixins -->
 		<!--<script type="text/javascript" src="./assets/mixins/store.mixin.js" defer></script>-->
 		<!--<script type="text/javascript" src="./assets/mixins/tag.mixin.js" defer></script>-->
 		<!-- stores -->
@@ -61,7 +65,8 @@
   		    url: '',
   		    favicon: 'favicon.ico'
 		    },
-		    VIEWS: ['./app/app.tag.html']
+		    VIEWS: ['./app/app.tag.html'],
+		    MIXINS: ['./mixin/mixin.global.js']
 		  };
 		  
 		  Object.assign(this, this.default, this.opts);
