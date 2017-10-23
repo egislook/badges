@@ -15,7 +15,7 @@ exports.compileRiot   = compileRiot;
 function render(dir = '../public', opts = {}){
   console.log(dir);
   return requireViews(dir)
-    .then((views) => views.paths.map(path => path.replace(dir, './public')))
+    .then((views) => views.paths.map(path => path.replace(dir, '.')))
     .then((VIEWS) => renderHTML(Object.assign(opts, { VIEWS })));
 }
 
