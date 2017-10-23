@@ -13,14 +13,18 @@ exports.compileRiot   = compileRiot;
 
 
 function render(dir = '../public', opts = {}){
-  console.log(dir);
+  //console.log(dir);
   return requireViews(dir)
     .then((views) => views.paths.map(path => path.replace(dir, '.')))
     .then((VIEWS) => renderHTML(Object.assign(opts, { VIEWS })));
 }
 
 function renderHTML(opts = {}, tagName = 'html'){
-  return `<!DOCTYPE html> ${riot.render(tagName, opts)}`;
+  return  `
+    <!DOCTYPE html> 
+    ${riot.render(tagName, opts)}
+    <script>riot.mount('app');</script>
+  `;
 }
 
 function compileRiot(filePath){

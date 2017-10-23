@@ -20,7 +20,7 @@
 		<!-- favicon -->
 		<link rel="shortcut icon" type="image/x-icon" href={ META.favicon } />
 		<!-- stylesheets -->
-		<!--<link rel="stylesheet" href="https://cdn.rawgit.com/noneedsystem/fuico/0.0.8/style.css">-->
+		<link rel="stylesheet" href="https://cdn.rawgit.com/noneedsystem/fuico/0.0.8/style.css">
 		<!-- <link rel="stylesheet" href="/assets/css/style.css"> -->
 		<!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:100,300,400,500">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600"> -->
@@ -31,8 +31,8 @@
 
 	</head>
 
-	<body class="prim:pink sec:teal err:red600 warn:yellow ok:green txt:black100 fw:300 fs:15px md-fs:16px lh:1.3 bg:f1f1f1">
-    <app tag={opts.tag}></app>
+	<body class="prim:pink sec:teal err:red600 warn:yellow ok:green txt:black100 fw:300 fs:15px md-fs:16px lh:1.3 bg:f1f1f1 fs:200pc_h1">
+    <app page={page} splash={splash}></app>
 		<!-- js libraries -->
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.2/lodash.min.js" defer></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/riot/3.7.2/riot.min.js" defer></script>
@@ -47,10 +47,12 @@
 		<!-- stores -->
 		<!--<script type="text/javascript" src="./assets/stores/app.store.js" defer></script>-->
 		<!-- init -->
-		<!--<script type="text/javascript" src="./assets/scripts/init.js" defer></script>-->
+		<!--<script type="text/javascript" src="./init.js" defer></script>-->
 
 		<script>
 		  this.default = {
+		    page: 'main',
+		    splash: false,
 		    META: {
 		      title: 'Poinout app',
   		    description: 'Simple app description',

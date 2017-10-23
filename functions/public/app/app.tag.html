@@ -1,36 +1,57 @@
 <app>
-  <div class="dp:flx ai:c h:100vh">
-    
+  <div>
     <nav class="w:100pc ps:fx bg:white t:0 bs:1">
       <a class="p:10px" href={_link(route)} each={route in routes}>{ route.name }</a>
     </nav>
     
-    <main data-is={_page()}></main>
+    <main class="dp:flx ai:c h:100vh">
+      <div data-is={page}></div>
+    </main>
     
+    <comp-splash splash={splash && page}></comp-splash>
   </div>
   
   <script>
   
     this.default = {
-      tag: 'main',
+      page: 'main',
+      splash: false,
       routes: [
         { name: 'main', main: true },
         { name: 'todo' }
       ],
     };
     
-    Object.assign(this, this.default, this.opts);
+    const tag = Object.assign(this, this.default, this.opts);
     
-    
-    this._page = () => {
-      let route = this.routes.filter((route) => route.name === this.opts.tag);
+    this._page = (page) => {
+      let route = this.routes.filter((route) => route.name === page);
       if(route.length !== 1)
         route = this.routes.filter((route) => route.main);
         
       return `page-${route.shift().name}`;
     }
     
+    this.page = this._page(this.page);
+    
     this._link = (route) => route.link || route.main && '/' || '/' + route.name;
+    
+    console.log('CLIENT');
+    
+    //console.log(window);
+    if(typeof module !== 'object'){
+      window.route((page) => {
+        let query = new URLSearchParams(window.location.search);
+        tag.update({ 
+          page: tag._page(page), 
+          splash: query.get('splash') 
+        });
+      });
+      window.route.base('/');
+      window.route.start(1);
+    }
+    
+    this.on('update', console.log);
     
     
   </script>

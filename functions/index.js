@@ -5,7 +5,8 @@ exports.root = functions.https.onRequest(root);
 
 function root(req, res){
   const opts = { 
-    tag: req.originalUrl.split('/').pop()
+    page: req.originalUrl.split('/').pop(),
+    splash: req.query.splash
   };
   riothing.render(process.cwd() + '/public', opts).then((HTML) => res.send(HTML));
 }
