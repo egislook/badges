@@ -41,11 +41,15 @@
 		<script type="text/javascript" src="https://cdn.rawgit.com/noneedsystem/fucss/0.6.8/fucss.js" defer></script>
 		
 		<!-- actions -->
-		<script if={ACTIONS} each={action in ACTIONS} type="text/javascript" src={action} defer></script>
+		<script if={false && ACTIONS} each={action in ACTIONS} type="text/javascript" src={action} defer></script>
 		<!-- mixins -->
-		<script if={MIXINS} each={mix in MIXINS} type="text/javascript" src={mix} defer></script>
+		<script if={false && MIXINS} each={mix in MIXINS} type="text/javascript" src={mix} defer></script>
 		<!-- riot components -->
 		<script if={VIEWS} each={view in VIEWS} type="riot/tag" src={view} defer></script>
+		<!-- riothing stores -->
+		<script if={STORES} each={store in STORES} type="riot/tag" src={store.path} defer></script>
+		
+		<script type="text/javascript" src="/lib/riothing.js" defer></script>
 		<!--<script type="text/javascript" src="./assets/mixins/store.mixin.js" defer></script>-->
 		<!--<script type="text/javascript" src="./assets/mixins/tag.mixin.js" defer></script>-->
 		<!-- stores -->
@@ -54,6 +58,8 @@
 		<!--<script type="text/javascript" src="./init.js" defer></script>-->
 
 		<script>
+		  this.mixin('riothing');
+		  
 		  this.default = {
 		    page: 'main',
 		    splash: false,
@@ -71,7 +77,10 @@
 		  
 		  Object.assign(this, this.default, this.opts);
 		  
-		  console.log(this);
+		  this.act('SET_ROUTE', 'tadam-param');
+		  
+		  this.act('SET_SOMMETING', 'something');
+		  
 		</script>
 
 	</body>

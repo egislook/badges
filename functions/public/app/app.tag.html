@@ -1,18 +1,26 @@
 <app>
   <div>
     <nav class="w:100pc ps:fx bg:white t:0 bs:1">
-      <a class="p:10px" href={_link(route)} onclick={ POINACT('setRoute', route) } each={route in routes}>{ route.name }</a>
+      <a class="p:10px" href={_link(route)} onclick={ false && _setRoute(route) } each={route in routes}>{ route.name }</a>
+      <button onclick={ _triggerUpdate }>update</button>
     </nav>
     
     <main class="dp:flx ai:c h:100vh">
-      <div data-is={page}></div>
+      <div data-is={'page-' + page}></div>
     </main>
     
   </div>
   
   <script>
-    this.mixin('poinact');
-  
+    
+    this.mixin('riothing');
+    
+    // if(typeof module !== 'object'){
+    //   riothing.setStore(routesStore());
+    // }
+    
+    //console.log('WTF', riothing.act('SET_ROUTE', this.page));
+    
     this.default = {
       page: 'main',
       splash: false,
@@ -24,34 +32,19 @@
     
     const tag = Object.assign(this, this.default, this.opts);
     
-    this._page = (page) => {
-      let route = this.routes.filter((route) => route.name === page);
-      if(route.length !== 1)
-        route = this.routes.filter((route) => route.main);
-        
-      return `page-${route.shift().name}`;
+    this._setRoute = (route) => (e) => {
+      e.preventUpdate = true;
+      this.act('SET_ROUTE', route.name);
     }
     
-    this.page = this._page(this.page);
+    this._triggerUpdate = () => 
+      this.act('TRIGGER_UPDATE');
     
     this._link = (route) => route.link || route.main && '/' || '/' + route.name;
     
-    //console.log(window);
-    if(typeof module !== 'object'){
-      console.log('CLIENT');
-      
-      window.route((page) => {
-        let query = new URLSearchParams(window.location.search);
-        tag.update({ 
-          page: tag._page(page), 
-          splash: query.get('splash') 
-        });
-      });
-      window.route.base('/');
-      window.route.start(1);
-    }
+    this.new('ROUTE_STATE', this.update);
     
-    this.on('update', console.log);
+    this.on('update', (data) => console.log('APP UPDATE', data));
     
     
   </script>

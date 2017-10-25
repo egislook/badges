@@ -1,5 +1,10 @@
 function poinactMixin(actions, stores){
   console.log('init poinactMixin');
+  const ward = riot.observable();
+  
+  ward.on('SET_ROUTE', (route) => console.log('SET_ROUTE', route));
+  
+  
   return {
     init: function(){
 
@@ -15,11 +20,15 @@ function poinactMixin(actions, stores){
       //   console.log(action);
       // }
       
+      this.WARD = ward;
+      
+      console.log('TADAM', this.WARD);
+      
       this.POINACT = (actionName, payload, cb) => 
-        (e) => __ACTIONS[actionName](payload, e, cb);
+        (e) => console.log(actionName, payload, e, cb);
     }
   }
 }
 
 if(typeof module !== 'object')
-  riot.mixin('poinact', poinactMixin(__ACTIONS, {}));
+  riot.mixin('poinact', poinactMixin());
