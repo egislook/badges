@@ -47,7 +47,7 @@
 		<!-- riot components -->
 		<script if={VIEWS} each={view in VIEWS} type="riot/tag" src={view} defer></script>
 		<!-- riothing stores -->
-		<script if={STORES} each={store in STORES} type="riot/tag" src={store.path} defer></script>
+		<script if={STORES} each={store in STORES} type="text/javascript" src={store.path} defer></script>
 		
 		<script type="text/javascript" src="/lib/riothing.js" defer></script>
 		<!--<script type="text/javascript" src="./assets/mixins/store.mixin.js" defer></script>-->

@@ -92,11 +92,7 @@ function Riothing(data){
         if(typeof module === 'object' || typeof store !== 'string')
           return this.setStore(store);
         
-        //client store loader by name
-        if(typeof parent[store] !== 'function')
-          return setTimeout(() => this.setStore(parent[store]()), 100);
-        
-        this.setStore(parent[store]());
+        return this.setStore(parent[store]())
       });
     }
   }
