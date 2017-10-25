@@ -3,67 +3,54 @@
 	  <meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<!-- for Google -->
-		<meta name="description" content={ META.description } />
-		<meta name="author" content={ META.author } />
-		<meta name="copyright" content="{ META.title }. All Rights Reserved." />
-		<meta name="application-name" content={ META.title } />
+		<meta name="description" content={ meta.description } />
+		<meta name="author" content={ meta.author } />
+		<meta name="copyright" content="{ meta.title }. All Rights Reserved." />
+		<meta name="application-name" content={ meta.title } />
 		<!-- for Facebook -->
-		<meta property="og:title" content={ META.title } />
-		<meta property="og:image" content={ META.image } />
-		<meta property="og:url" content={ META.url } />
-		<meta property="og:description" content={ META.description } />
+		<meta property="og:title" content={ meta.title } />
+		<meta property="og:image" content={ meta.image } />
+		<meta property="og:url" content={ meta.url } />
+		<meta property="og:description" content={ meta.description } />
 		<!-- for Twitter -->
 		<meta name="twitter:card" content="summary" />
-		<meta name="twitter:title" content={ META.title } />
-		<meta name="twitter:description" content={ META.description } />
-		<meta name="twitter:image" content={ META.image } />
+		<meta name="twitter:title" content={ meta.title } />
+		<meta name="twitter:description" content={ meta.description } />
+		<meta name="twitter:image" content={ meta.image } />
 		<!-- favicon -->
-		<link rel="shortcut icon" type="image/x-icon" href={ META.favicon } />
+		<link rel="shortcut icon" type="image/x-icon" href={ meta.favicon } />
 		<!-- stylesheets -->
 		<link rel="stylesheet" href="https://cdn.rawgit.com/noneedsystem/fuico/0.0.8/style.css">
 		<!-- <link rel="stylesheet" href="/assets/css/style.css"> -->
 		<!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:100,300,400,500">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600"> -->
 		<!-- prefetch -->
-		<!--<link rel="prefetch" href="/content">-->
+		<link rel="prefetch" href="/content.json">
 
-		<title>{ META.title }</title>
+		<title>{ meta.title }</title>
 
 	</head>
 
-	<body class="prim:pink sec:teal err:red600 warn:yellow ok:green txt:black100 fw:300 fs:15px md-fs:16px lh:1.3 bg:f1f1f1 fs:200pc_h1">
-    <app page={page} splash={splash}></app>
+	<body class="prim:pink sec:teal err:red600 warn:yellow ok:green txt:black100 c:txt fw:300 fs:15px md-fs:16px lh:1.3 bg:f1f1f1 fs:200pc_h1">
+    <app></app>
 		<!-- js libraries -->
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.2/lodash.min.js" defer></script>
+		<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.2/lodash.min.js" defer></script>-->
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/riot/3.7.2/riot.min.js" defer></script>
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/riot-route/3.1.1/route.min.js" defer></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/riot/3.7.2/riot+compiler.min.js" defer></script>
 		<script type="text/javascript" src="https://cdn.rawgit.com/noneedsystem/fucss/0.6.8/fucss.js" defer></script>
+		<script type="text/javascript" src="/lib/riothing.js" defer></script>
 		
-		<!-- actions -->
-		<script if={false && ACTIONS} each={action in ACTIONS} type="text/javascript" src={action} defer></script>
-		<!-- mixins -->
-		<script if={false && MIXINS} each={mix in MIXINS} type="text/javascript" src={mix} defer></script>
-		<!-- riot components -->
-		<script if={VIEWS} each={view in VIEWS} type="riot/tag" src={view} defer></script>
 		<!-- riothing stores -->
 		<script if={STORES} each={store in STORES} type="text/javascript" src={store.path} defer></script>
-		
-		<script type="text/javascript" src="/lib/riothing.js" defer></script>
-		<!--<script type="text/javascript" src="./assets/mixins/store.mixin.js" defer></script>-->
-		<!--<script type="text/javascript" src="./assets/mixins/tag.mixin.js" defer></script>-->
-		<!-- stores -->
-		<!--<script type="text/javascript" src="./assets/stores/app.store.js" defer></script>-->
-		<!-- init -->
-		<!--<script type="text/javascript" src="./init.js" defer></script>-->
+		<!-- riot components -->
+		<script if={VIEWS} each={view in VIEWS} type="riot/tag" src={view} defer></script>
 
 		<script>
 		  this.mixin('riothing');
 		  
 		  this.default = {
-		    page: 'main',
-		    splash: false,
-		    META: {
+		    meta: {
 		      title: 'Poinout app',
   		    description: 'Simple app description',
   		    author: 'egis',
@@ -75,11 +62,7 @@
 		    MIXINS: ['./mixin/mixin.global.js']
 		  };
 		  
-		  Object.assign(this, this.default, this.opts);
-		  
-		  this.act('SET_ROUTE', 'tadam-param');
-		  
-		  this.act('SET_SOMMETING', 'something');
+		  Object.assign(this, this.default, this.opts, { meta: this.store('routes').get('meta') });
 		  
 		</script>
 

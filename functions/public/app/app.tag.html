@@ -1,7 +1,7 @@
 <app>
   <div>
     <nav class="w:100pc ps:fx bg:white t:0 bs:1">
-      <a class="p:10px" href={_link(route)} onclick={ false && _setRoute(route) } each={route in routes}>{ route.name }</a>
+      <a class="p:10px" href={route.link} onclick={ false && _setRoute(route) } each={route in routes}>{ route.name }</a>
       <button onclick={ _triggerUpdate }>update</button>
     </nav>
     
@@ -12,37 +12,20 @@
   </div>
   
   <script>
-    
     this.mixin('riothing');
-    
-    // if(typeof module !== 'object'){
-    //   riothing.setStore(routesStore());
-    // }
-    
-    //console.log('WTF', riothing.act('SET_ROUTE', this.page));
     
     this.default = {
       page: 'main',
       splash: false,
       routes: [
-        { name: 'main', main: true },
-        { name: 'todo' }
+        { name: 'main', main: true, link: '/' },
+        { name: 'todo', link: '/todo' }
       ],
     };
     
-    const tag = Object.assign(this, this.default, this.opts);
+    Object.assign(this, this.default, this.opts);
     
-    this._setRoute = (route) => (e) => {
-      e.preventUpdate = true;
-      this.act('SET_ROUTE', route.name);
-    }
-    
-    this._triggerUpdate = () => 
-      this.act('TRIGGER_UPDATE');
-    
-    this._link = (route) => route.link || route.main && '/' || '/' + route.name;
-    
-    this.new('ROUTE_STATE', this.update);
+    this.track('ROUTE_STATE', this.update);
     
     this.on('update', (data) => console.log('APP UPDATE', data));
     

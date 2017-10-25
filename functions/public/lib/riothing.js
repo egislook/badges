@@ -5,9 +5,10 @@ function Riothing(data){
   
   this.storeNames = [];
   this.stores = {};
+  this.state = {};
   
   this.riothingStore = function riothingStore(initState = {}, actions = {}){
-    this.state = {};
+    this.state = initState;
     this.actions = {};
     this.actionNames = [];
     
@@ -19,12 +20,12 @@ function Riothing(data){
     this.set = (object = {}) => 
       Object.assign(this.state, object)
       
-    this.get = (key) => 
-      key ? this.state[key] : this.state;
+    this.get = (key) => {
+      return key ? key.split('.').reduce((o,i) => o[i], this.state) : this.state;
+    }
     
     // Initiation
     _setActions.bind(this)(actions);
-    _setState.bind(this)(initState);
       
     function _setActions(actions){
       this.actionNames = Object.keys(actions);
@@ -32,10 +33,6 @@ function Riothing(data){
       this.actionNames.some((actionName) => {
         this.actions[actionName] = actions[actionName].bind(this);
       });
-    }
-    
-    function _setState(initState){
-      this.set(initState);
     }
     
     //console.log(this);
@@ -51,33 +48,39 @@ function Riothing(data){
     if(!action) 
       return console.warn(`Action "${actionName}" can not be found params "${payload}"`);
     
-    action(payload, cb);
+    return action(payload, cb);
   }
   
   //this.on('*', this.act);
   
   this.setStore = (store, state, actions) => {
     if(typeof store === 'object'){
-      state   = store.state || {};
+      state   = store.state   || {};
       actions = store.actions || {};
-      store   = store.name || 'noname';
+      store   = store.name    || 'noname';
     }
     
     this.storeNames.push(store);
-    console.log('setStore', { name: store, state, actions });
     this.stores[store] = new this.riothingStore(state, actions);
+    //console.log('setStore', { name: store, state, actions, store: this.stores[store] });
   }
   
+  this.getStore = function(storeName){
+    return this.stores[storeName];
+  }
+  
+  this.store = this.getStore;
   
   
   //Initiation
   this.mixin = (riothing) => {
+    console.log('in riot tag:', 'this.mixin(\'riothing\')', 'methods:', ['act', 'track']);
     return {
       init: function(){
         this.SERVER = typeof module === 'object';
-        this.act = riothing.act;
-        this.track = riothing.on;
-        this.new = riothing.on;
+        this.act = riothing.act.bind(riothing);
+        this.track = riothing.on.bind(riothing);
+        this.store = riothing.getStore.bind(riothing);
       }
     }
   }
@@ -91,9 +94,21 @@ function Riothing(data){
         //server initiation
         if(typeof module === 'object' || typeof store !== 'string')
           return this.setStore(store);
-        
+        //client initiation
         return this.setStore(parent[store]())
       });
+    }
+    
+    if(data.state){
+      if(typeof data.state === 'object')
+        this.state = data.state;
+      if(typeof data.state === 'string' && typeof module !== 'object')
+        fetch(data.state)
+          .then(res => res.json())
+          .then(json => {
+            console.log(json);
+            this.state = json;
+          });
     }
   }
     
@@ -104,7 +119,7 @@ function Riothing(data){
     //init data
     this.initData(data);
     
-    //INIT ONLY CLIENT
+    //INIT ONLY CLIENT FROM HERE
     if(typeof module === 'object')
       return;
     
@@ -112,43 +127,14 @@ function Riothing(data){
     route((page) => {
       let query = new URLSearchParams(window.location.search);
       this.act('SET_ROUTE', page, query.get('splash'));
+      route(this.store('routes').get('route.link'), this.store('routes').get('meta.title'));
     });
 
     route.base('/');
     route.start(1);
+    
+    riot.mount('app');
   }
   
   this.init();
 }
-
-// if(typeof module === 'object'){
-//   var riot = require('riot');
-//   module.exports = Riothing;
-// }
-
-// riothing.setStore('routes', { 
-//   page: 'main',
-//   splash: null,
-//   routes: [
-//     { name: 'main', main: true },
-//     { name: 'todo'}
-//   ]
-// }, {
-//   'SET_ROUTE': function(page, splash){
-    
-//     let route = this.get('routes').filter((route) => route.name === page);
-//     if(route.length !== 1)
-//       route = this.get('routes').filter((route) => route.main);
-    
-//     console.log('SET_ROUTE', page);
-//     this.set({ page: route.name, splash });
-//     this.trigger('ROUTE_STATE', this.get());
-//   },
-//   'SET_SOMETHING': function(something, cb){ 
-//     console.log(something);
-//     //this.set({ something })
-//   },
-//   'TRIGGER_UPDATE': function(anno){
-//     this.trigger('ROUTE_STATE', this.state); 
-//   }
-// });

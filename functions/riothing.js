@@ -1,71 +1,56 @@
 'use strict';
 
-const fs      = require('fs');
-const riot    = require('riot');
-const Module  = require('module');
-const path    = require('path');
-//const Riothing = require(__dirname + '/public/lib/riothing.js');
-//console.log(Riothing);
+const publicPath = __dirname + '/public';
 
-exports.render        = render;
+const fs        = require('fs');
+const riot      = require('riot');
+const Module    = require('module');
+const path      = require('path');
+const Riothing  = clientRequire(publicPath + '/lib/riothing.js');
+const content   = require(publicPath + '/content.json');
+
+const riothing  = new Riothing({ state: content });
+
+const ROOT      = {
+  VIEWS:  [],
+  STORES: [],
+};
+
+init(publicPath, ROOT);
+
 exports.renderHTML    = renderHTML;
 exports.clientRequire = clientRequire;
 exports.initViews     = initViews;
-//exports.initMixins    = initMixins;
 exports.compileRiot   = compileRiot;
+exports.route         = route;
 
 
-function render(dir = './public', opts = {}){
+
+function route(req, res){
+  const page    = req.originalUrl.split('/').pop();
+  const splash  = req.query.splash;
   
-  return initStores(dir + '/store').then((stores) => {
-    const Riothing = clientRequire(__dirname + '/public/lib/riothing.js');
-    new Riothing({
-      stores: stores.slice(0).map((store) => store.fn())
-    });
-    return stores;
-  }).then((stores) => stores.map((store) => ({ name: store.name, path: store.path.replace(dir, '.') })))
-    .then((STORES) =>
-      initViews(dir)
-        .then((views) => views.paths.map(path => path.replace(dir, '.')))
-        .then((VIEWS) => renderHTML(Object.assign(opts, { VIEWS, STORES })))
-    );
-  //console.log(dir);
-  // return initActions(dir + '/action')
-  //   .then((actions) => actions.map(path => path.replace(dir, '.')))
-  //   .then((ACTIONS) => 
-  //     initMixins(dir + '/mixin')
-  //       .then((mixins) => mixins.map(path => path.replace(dir, '.')))
-  //       .then((MIXINS) => 
-  //         initViews(dir)
-  //           .then((views) => views.paths.map(path => path.replace(dir, '.')))
-  //           .then((VIEWS) => renderHTML(Object.assign(opts, { VIEWS, MIXINS, ACTIONS })))
-  //       )
-  //   );
+  riothing.act('SET_ROUTE', page);
   
+  res.send(renderHTML(ROOT));
 }
 
-// function initMixins(dir = './public/mixin'){
-//   return readDir(path.resolve(dir)).then((files) => 
-//     files.map((filename) => {
-//       let _filePath = `${path.resolve(dir)}/${filename}`;
-//       riot.mixin(
-//         filename.split('.')[1], 
-//         clientRequire(_filePath), 
-//         filename.indexOf('global') >= 0
-//       )
-//       return _filePath;
-//     })
-//   );
-// }
-
-// function initActions(dir = './public/action'){
-//   return readDir(path.resolve(dir)).then((files) => 
-//     files.map((filename) => {
-//       let _filePath = `${path.resolve(dir)}/${filename}`;
-//       return _filePath;
-//     })
-//   );
-// }
+function init(pubPath, root){
+  initStores(pubPath + '/store').then((stores) => {
+  
+    stores.forEach( (store) => riothing.setStore(store.fn()) );
+    
+    root.STORES = stores.map((store) => ({ 
+      name: store.name,
+      path: store.path.replace(pubPath, '.')
+    }));
+  });
+  
+  initViews(pubPath + '/app').then((views) => {
+    compileRiot(pubPath + '/root.html');
+    root.VIEWS = views.paths.map((path) => path.replace(pubPath, '.'));
+  });
+}
 
 function initStores(dir = './public/store'){
   return readDir(path.resolve(dir)).then((files) => 
@@ -96,15 +81,13 @@ function initViews(dir, skipViewFiles){
 }
 
 function renderHTML(opts = {}, tagName = 'html'){
-  console.log('RENDERHTML', opts);
   let stores = opts.STORES && opts.STORES.slice(0).map(store => store.name) || [];
-  console.log(stores);
   return  `
     <!DOCTYPE html> 
     ${riot.render(tagName, opts)}
     <script>
-      new Riothing({ stores: ${JSON.stringify(stores)}});
-      riot.mount('app');
+      new Riothing({ stores: ${JSON.stringify(stores)}, state: '/content.json' });
+      //riot.mount('app');
     </script>
   `;
 }
@@ -115,11 +98,7 @@ function compileRiot(filePath){
 
 function clientRequire(filePath, code, include){
   filePath = path.resolve(filePath);
-  include = include || 
-  [
-    `var riot = require('riot');`,
-    //`var Riothing = require('${path.resolve(__dirname + '/public/lib/riothing.js')}');`
-  ];
+  include = include || [`var riot = require('riot');`];
   code = code || fs.readFileSync(filePath, 'utf8');
   let paths = Module._nodeModulePaths(__dirname);
   code = `
