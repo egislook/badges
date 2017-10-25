@@ -88,11 +88,15 @@ function Riothing(data){
     
     if(data.stores && data.stores.length){
       data.stores.forEach((store) => {
+        //server initiation
+        if(typeof module === 'object' || typeof store !== 'string')
+          return this.setStore(store);
+        
         //client store loader by name
-        if(typeof module !== 'object' && typeof store === 'string')
-          return setTimeout(() => this.setStore(parent[store]()), 1);
-          
-        this.setStore(store)
+        if(typeof parent[store] !== 'function')
+          return setTimeout(() => this.setStore(parent[store]()), 100);
+        
+        this.setStore(parent[store]());
       });
     }
   }
