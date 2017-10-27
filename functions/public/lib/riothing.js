@@ -1,42 +1,12 @@
 function Riothing(data){
   const self = this;
+  const SERVER = typeof module === 'object';
   
   riot.observable(this);
   
   this.storeNames = [];
   this.stores = {};
-  this.state = {};
-  
-  this.riothingStore = function riothingStore(initState = {}, actions = {}){
-    this.state = initState;
-    this.actions = {};
-    this.actionNames = [];
-    
-    // Parent Actions
-    this.act = self.act;
-    this.trigger = self.trigger;
-    
-    // Main methods
-    this.set = (object = {}) => 
-      Object.assign(this.state, object)
-      
-    this.get = (key) => {
-      return key ? key.split('.').reduce((o,i) => o[i], this.state) : this.state;
-    }
-    
-    // Initiation
-    _setActions.bind(this)(actions);
-      
-    function _setActions(actions){
-      this.actionNames = Object.keys(actions);
-      
-      this.actionNames.some((actionName) => {
-        this.actions[actionName] = actions[actionName].bind(this);
-      });
-    }
-    
-    //console.log(this);
-  }
+  this.models = {};
   
   this.act = (actionName, payload, cb) => {
     let action;
@@ -53,16 +23,18 @@ function Riothing(data){
   
   //this.on('*', this.act);
   
-  this.setStore = (store, state, actions) => {
+  this.setStore = (store, state, actions, models, model) => {
     if(typeof store === 'object'){
-      state   = store.state   || {};
-      actions = store.actions || {};
+      state   = store.state   || state    || {};
+      actions = store.actions || actions  || {};
+      models  = store.models  || models   || {};
+      model   = store.model;
       store   = store.name    || 'noname';
     }
     
+    this.models = Object.assign(this.models, models);
     this.storeNames.push(store);
-    this.stores[store] = new this.riothingStore(state, actions);
-    //console.log('setStore', { name: store, state, actions, store: this.stores[store] });
+    this.stores[store] = new riothingStore(state, actions, model);
   }
   
   this.getStore = function(storeName){
@@ -71,69 +43,99 @@ function Riothing(data){
   
   this.store = this.getStore;
   
-  
   //Initiation
-  this.mixin = (riothing) => {
-    console.log('in riot tag:', 'this.mixin(\'riothing\')', 'methods:', ['act', 'track']);
-    return {
-      init: function(){
-        this.SERVER = typeof module === 'object';
-        this.act = riothing.act.bind(riothing);
-        this.track = riothing.on.bind(riothing);
-        this.store = riothing.getStore.bind(riothing);
-      }
-    }
+  this.initClient = (stores, state) => {
+    stores.length &&
+      stores.forEach((store) => this.setStore(parent[store](state)));
+    //init route action
+    route((page) => {
+      let query = new URLSearchParams(window.location.search);
+      this.act('SET_ROUTE', page, query.get('splash'));
+    });
+
+    route.base('/');
+    route.start(1);
+    riot.mount('app');
   }
   
   this.initData = (data) => {
     if(!data)
       return;
+      
+    const { state, stores } = data;
     
-    if(data.stores && data.stores.length){
-      data.stores.forEach((store) => {
-        //server initiation
-        if(typeof module === 'object' || typeof store !== 'string')
-          return this.setStore(store);
-        //client initiation
-        return this.setStore(parent[store]())
-      });
-    }
+    if(!state)
+      return this.initClient(stores);
     
-    if(data.state){
-      if(typeof data.state === 'object')
-        this.state = data.state;
-      if(typeof data.state === 'string' && typeof module !== 'object')
-        fetch(data.state)
-          .then(res => res.json())
-          .then(json => {
-            console.log(json);
-            this.state = json;
-          });
-    }
+    if(typeof state === 'string' && !SERVER)
+      fetch(state)
+        .then(res => res.json())
+        .then(state => this.initClient(stores, state));
   }
     
   this.init = () => {
-    
     //init mixin
-    riot.mixin('riothing', this.mixin(this));
+    riot.mixin('riothing', mixin(this));
     //init data
-    this.initData(data);
+    !SERVER && this.initData(data);
+  }
+  
+  function mixin(riothing){
+    console.log('Riothing Mixin', `
+      init: this.mixin(\'riothing\')
+      methods: ['act', 'track', 'store']
+      variables: ['models']
+    `);
+    return {
+      init: function(){
+        this.SERVER   = SERVER;
+        this.act      = riothing.act.bind(riothing);
+        this.track    = riothing.on.bind(riothing);
+        this.store    = riothing.getStore.bind(riothing);
+        this.models   = riothing.models;
+        this.stores   = riothing.stores;
+      }
+    }
+  }
+  
+  function riothingStore(initState = {}, actions = {}, model){
+    riot.observable(this);
+    // Variables
+    this.SERVER       = SERVER;
+    this.model        = model;
+    this.state;
+    this.actions      = {};
+    this.actionNames  = [];
     
-    //INIT ONLY CLIENT FROM HERE
-    if(typeof module === 'object')
-      return;
+    // Parent Actions
+    this.act      = self.act;
+    this.trigger  = self.trigger;
+    this.track    = this.on;
     
-    //init route action
-    route((page) => {
-      let query = new URLSearchParams(window.location.search);
-      this.act('SET_ROUTE', page, query.get('splash'));
-      route(this.store('routes').get('route.link'), this.store('routes').get('meta.title'));
-    });
-
-    route.base('/');
-    route.start(1);
+    // Main methods
+    this.set = (object = {}) => {
+      const newState = this.model ? new this.model(object, this.state) : object;
+      this.state = newState;
+      this.trigger('SET', newState);
+      return newState;
+    }
     
-    riot.mount('app');
+    this.get = (key) => key 
+      ? key.split('.').reduce((o,i) => o[i], this.state) 
+      : this.state;
+    
+    
+    // Initiation
+    _setActions.bind(this)(actions);
+    this.set(initState);
+      
+    function _setActions(actions){
+      this.actionNames = Object.keys(actions);
+      
+      this.actionNames.some((actionName) => {
+        this.actions[actionName] = actions[actionName].bind(this);
+      });
+    }
   }
   
   this.init();

@@ -1,34 +1,41 @@
 <app>
-  <div>
+  <div class="ts:ft-1s {'blr:1px': splash}">
     <nav class="w:100pc ps:fx bg:white t:0 bs:1">
       <a class="p:10px" href={route.link} onclick={ false && _setRoute(route) } each={route in routes}>{ route.name }</a>
-      <button onclick={ _triggerUpdate }>update</button>
     </nav>
     
     <main class="dp:flx ai:c h:100vh">
-      <div data-is={'page-' + page}></div>
+      <div data-is={ route.view }></div>
     </main>
-    
   </div>
+  
+  <comp-splash splash={splash} route={subroute}></comp-splash>
   
   <script>
     this.mixin('riothing');
+    const { Route }   = this.models;
+    const { routes: storeRoutes }  = this.stores;
     
-    this.default = {
-      page: 'main',
-      splash: false,
-      routes: [
-        { name: 'main', main: true, link: '/' },
-        { name: 'todo', link: '/todo' }
-      ],
-    };
-    
-    Object.assign(this, this.default, this.opts);
-    
-    this.track('ROUTE_STATE', this.update);
+    Object.assign(this, new Opts(storeRoutes.get()));
     
     this.on('update', (data) => console.log('APP UPDATE', data));
     
+    storeRoutes.track('ROUTE_STATE', (state) => this.update(new Opts(state) ));
     
+    function Opts(opts = {}){
+      this.ready  = opts.ready  || false;
+      this.page   = opts.page   || 'main';
+      this.splash = opts.splash || false;
+      
+      this.routes = opts.routes && opts.routes.map((route) => new Route(route)) || 
+      [
+        new Route({ name: 'main', main: true }),
+        new Route({ name: 'todo' })
+      ];
+      this.route    = this.routes.filter((route) => route.name === this.page).shift();
+      this.subroute = opts.subroute;
+      
+      return this;
+    }
   </script>
 </app>

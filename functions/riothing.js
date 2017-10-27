@@ -9,7 +9,7 @@ const path      = require('path');
 const Riothing  = clientRequire(publicPath + '/lib/riothing.js');
 const content   = require(publicPath + '/content.json');
 
-const riothing  = new Riothing({ state: content });
+const riothing  = new Riothing();
 
 const ROOT      = {
   VIEWS:  [],
@@ -30,15 +30,16 @@ function route(req, res){
   const page    = req.originalUrl.split('/').pop();
   const splash  = req.query.splash;
   
-  riothing.act('SET_ROUTE', page);
+  riothing.act('SET_ROUTE', page, splash);
   
-  res.send(renderHTML(ROOT));
+  //res.send(renderHTML(ROOT));
+  init(publicPath, ROOT).then(res.send(renderHTML(ROOT)));
 }
 
 function init(pubPath, root){
   initStores(pubPath + '/store').then((stores) => {
   
-    stores.forEach( (store) => riothing.setStore(store.fn()) );
+    stores.forEach( (store) => riothing.setStore(store.fn(content)) );
     
     root.STORES = stores.map((store) => ({ 
       name: store.name,
@@ -46,7 +47,7 @@ function init(pubPath, root){
     }));
   });
   
-  initViews(pubPath + '/app').then((views) => {
+  return initViews(pubPath + '/app').then((views) => {
     compileRiot(pubPath + '/root.html');
     root.VIEWS = views.paths.map((path) => path.replace(pubPath, '.'));
   });

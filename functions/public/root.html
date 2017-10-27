@@ -38,7 +38,8 @@
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/riot/3.7.2/riot.min.js" defer></script>
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/riot-route/3.1.1/route.min.js" defer></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/riot/3.7.2/riot+compiler.min.js" defer></script>
-		<script type="text/javascript" src="https://cdn.rawgit.com/noneedsystem/fucss/0.6.8/fucss.js" defer></script>
+		<!--<script type="text/javascript" src="https://cdn.rawgit.com/noneedsystem/fucss/0.6.8/fucss.js" defer></script>-->
+		<script type="text/javascript" src="/lib/fucss.js" defer></script>
 		<script type="text/javascript" src="/lib/riothing.js" defer></script>
 		
 		<!-- riothing stores -->
@@ -48,6 +49,7 @@
 
 		<script>
 		  this.mixin('riothing');
+		  const { routes: storeRoutes } = this.stores;
 		  
 		  this.default = {
 		    meta: {
@@ -62,7 +64,7 @@
 		    MIXINS: ['./mixin/mixin.global.js']
 		  };
 		  
-		  Object.assign(this, this.default, this.opts, { meta: this.store('routes').get('meta') });
+		  Object.assign(this, this.default, this.opts, { meta: storeRoutes.get('meta') });
 		  
 		</script>
 

@@ -1,9 +1,11 @@
 function storeRoutes(initState){
   
   return {
-    name:     'routes',
-    state:    new RoutesState(initState),
-    actions:  new Actions()
+    name:       'routes',
+    state:      initState,
+    actions:    new Actions(),
+    models:     { Route, Meta },
+    model:      RoutesState,
   };
   
   function Actions(){
@@ -15,16 +17,21 @@ function storeRoutes(initState){
         if(route.length !== 1)
           route = route.filter((route) => route.main);
         
-        let routeName = route.length !== 1 ? routes[0].name : route[0].name;
+        let routeName = route.length !== 1 
+          ? routes[0].name 
+          : route[0].name;
         
-        let state = this.set({ 
-          page: routeName, 
-          splash, 
-          meta: this.get('metas')[routeName],
-          route: this.get('routes').filter((route) => route.name === routeName).shift(),
+        let state = this.set({
+          ready: !this.SERVER,
+          page: routeName,
+          splash,
         });
-        
-        console.log('SET_ROUTE', routeName);
+        //console.log(state);
+        //set client title
+        if(!this.SERVER){
+          parent.route(parent.location.href.replace(parent.location.origin, ''), this.get('meta.title'));
+        }
+        console.log('SET_ROUTE', routeName, splash);
         
         this.trigger('ROUTE_STATE', state);
         return state;
@@ -41,30 +48,36 @@ function storeRoutes(initState){
     }
   }
   
-  function RoutesState(data = {}){
-    this.routes = [
+  function RoutesState(data = {}, prev = {}){
+    this.routes = data.routes && data.routes.map((route) => new Route(route)) || prev.routes ||
+    [
       new Route({ name: 'main', main: true }),
-      new Route({ name: 'todo'})
+      new Route({ name: 'todo' }),
+      new Route({ name: 'test' })
     ];
     
-    this.metas = {
+    this.metas = data.metas || prev.metas || {
       main: new Meta(),
       todo: new Meta({ title: 'todo poinout title'})
     };
     
-    this.page   = data.page   || 'main';
-    this.splash = data.splash || null;
-    this.route  = data.route  || this.routes.filter((route) => route.name === this.page).shift();
-    this.meta   = data.meta   || this.metas[this.page];
+    this.ready  = data.ready  || prev.ready   || false;
+    this.page   = data.page   || prev.page    || 'main';
+    this.splash = data.splash;
+    
+    //generated values
+    this.route    = this.routes.filter((route) => route.name === this.page).shift();
+    this.meta     = this.metas[this.page] || this.metas['main'];
+    this.subroute = this.splash && this.routes.filter((subroute) => subroute.name === this.splash).shift();
     
     return this;
   }
   
-  // Structures
   function Route(data = {}){
     this.name = data.name || 'none';
     this.main = data.main || false;
-    this.link = data.link || data.main && '/' || '/' + data.name;
+    this.link = data.link || this.main && '/' || '/' + this.name;
+    this.view = data.view || 'page-' + this.name;
     
     return this;
   }
