@@ -1,0 +1,20 @@
+<elem-alerts>
+  <div class="md-dp:flx m:0_all c:white ai,jc:c p-t:40px">
+    <div class="mnh:500px p:70px {'bg:red': alert.color === 'red', 'bg:red300': alert.color === 'red300' }" each={alert in alerts}>
+      <i class="{alert.icon} fs:500pc" />
+      <h1 class="p-tb:20px fs:300pc">{alert.title}</h1>
+      <elem-button trans={true} text={alert.button} />
+    </div>
+  </div>
+    
+  <script>
+    this.default = {
+      alerts: [
+        {title: 'Let’s talk about your amazing project', icon: 'fu-rocket2', button: 'get in touch', color: 'red'},
+        {title: 'We’re looking for talented peoples like you', icon: 'fu-new', button: 'apply now', color: 'red300'}
+      ]
+    }
+    
+    Object.assign(this, this.default);
+  </script>
+</elem-alerts>

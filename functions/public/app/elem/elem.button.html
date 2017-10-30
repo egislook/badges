@@ -1,9 +1,11 @@
 <elem-button>
-  <button class="p:15px-30px bg:prim c:white bs:1 fc-bs:2 ts:bs">{text}</button>
+  <button class="p:10px-30px c:white bs:1 fc-bs:2 ts:bs br:20px bd-w:2px hv-bg:ts ts:all tt:cap {
+    'bg:ts bd-c:white': trans, 'bg:prim bd-c:prim hv-c:prim': !trans
+  }"><yield/>{text}</button>
   
   <script>
     this.default = {
-      text: 'default button',
+      text: false,
     }
     
     Object.assign(this, this.default, this.opts);

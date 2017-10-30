@@ -912,7 +912,7 @@ fucss.generateGlobalExtras = function(){
     // ".dp\\:flx > *": 'margin: 0;',
     "a":    'text-decoration: none; color: inherit;',
     "a, span, img, button, i, label": 'display: inline-block; vertical-align: middle;',
-    "button, a, i, label": 'cursor: pointer; font-style: normal;',
+    "button, a, i, label, img": 'cursor: pointer; font-style: normal;',
     "input, button, select, option, textarea": 'font-size: 100%; font-family: inherit;',
     "::-moz-selection": 'background: ' + fucss.colors.prim + '; color: ' + fucss.colors.white + ';',
     "::selection": 'background: ' + fucss.colors.prim + '; color: ' + fucss.colors.white + ';',

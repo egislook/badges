@@ -1,0 +1,22 @@
+<elem-footer>
+  <footer class="mxw:1000px md-dp:flx ta:l p:70px-0 m:0_all jc:sb fs:90pc">
+    <div each={section in sections}>
+      <h2 class="p:20px-0">{section.title}</h2>
+      <p if={section.cols} each={col in section.cols}>{col}</p>
+      <a if={section.links} each={link in section.links} href="#" class="dp:bk p-tb:3px">{link}</a>
+    </div>
+    
+  </footer>
+  
+  <script>
+    this.default = {
+      sections: [
+        {title: 'Badges', cols: ['71 Pilgrim Avenue', 'Chevy Chase,', 'MD 20815, United States', 'poinout@gmail.com']},
+        {title: 'Quick Links', links: ['Home', 'About us', 'Contact us']},
+        {title: 'Follow us', links: ['Facebook', 'Twitter', 'Instagram', 'Behance', 'Dribbble']},
+      ]
+    };
+    
+    Object.assign(this, this.default);
+  </script>
+</elem-footer>

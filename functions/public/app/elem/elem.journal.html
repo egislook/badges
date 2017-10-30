@@ -1,0 +1,26 @@
+<elem-journal>
+  <div>
+    <a href="#" each={entry in entries} class="dp:flx h:100px m:0_all ta:l fs:110pc hv-bg:black hv-c:white hv-bd-c:ts_all ts:all p-rl:20px">
+      <div class="bd-b-w:2px bd-c:grey200 dp:flx w:100pc ai:c jc:sb">
+        <span>{entry.timestamp}</span>
+        <h3 class="m-r:auto p-l:20px">{entry.title}</h3>
+        <i class="fu-arrow-right" />
+      </div>
+    </a>
+  </div>
+  <script>
+    this.default = {
+      entries: [
+        {timestamp: 'September 23, 2017', title: 'Henri Barande’s Saatchi Gallery exhibition monograph'},
+        {timestamp: 'September 20, 2017', title: '“Nymphomaniac” photographer Casper Sejersen’s explosive images'},
+        {timestamp: 'September 13, 2017', title: 'Anja Wicki’s sarcastically sweet comic illustrations'},
+        {timestamp: 'September 10, 2017', title: 'Ran Park explores the chaos of “Konglish” in a new zine'},
+        {timestamp: 'September 08, 2017', title: 'Martin Müller designs covers for Specious Books'},
+        {timestamp: 'September 03, 2017', title: 'We speak to Ace & Tate Creative Fund Board Members'},
+        {timestamp: 'September 01, 2017', title: 'Kuti Kuti, the comic association looking to educate'},
+      ]
+    }
+    
+    Object.assign(this, this.default);
+  </script>
+</elem-journal>
