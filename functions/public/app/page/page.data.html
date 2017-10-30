@@ -1,0 +1,56 @@
+<page-data>
+  
+  <div class="h:100pc m:auto">
+    <h1>Data Page</h1>
+    <p>Lets say something and hope riot will render it</p>
+    <div class="ta:l">
+      <elem-leaf each={values, field in data} field={field} values={values} />
+      
+      <div class="dp:bk ws:pw">
+        {JSON.stringify(data, null, 4)}
+      </div>
+      
+    </div>
+  </div>
+  
+  <script>
+    this.mixin('riothing');
+    
+    this.data = this.store('data').get();
+  </script>
+</page-data>
+
+
+
+
+<elem-leaf>
+  <br if={_isLong(opts.values)} />
+  
+  <span class="fw:600 {'c:txt200': _isObject(opts.values)}">
+    {opts.field}
+  </span>
+  
+  <span class="c:txt200">
+    <strong if={_isShort(opts.values)}>:</strong>
+    <i if={_isLong(opts.values)} class="bg:txt200 br:50pc w,h:4px m-b:2px" if={_isShort(opts.values)} />
+    <i if={false && _isLong(opts.values)} class="fu-chevron-small-right" />
+  </span>
+  
+  <span class="va:b ws:pw" if={_isString(opts.values)}>
+    {opts.values}
+  </span>
+  
+  <div if={_isObject(opts.values)} class="p-l:20px lh:1.1_all">
+    <elem-leaf each={values, field in opts.values} field={field} values={values} />
+  </div>
+  
+  <script>
+    console.log(opts);
+    const limit = 30;
+    this._isString  = (values) => values && typeof values === 'string';
+    this._isObject  = (values) => values && typeof values === 'object';
+    this._isLong    = (values) => values && typeof values === 'string' && values.length > limit;
+    this._isShort   = (values) => values && typeof values === 'string' && values.length <= limit;
+    
+  </script>
+</elem-leaf>

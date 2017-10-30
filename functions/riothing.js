@@ -6,10 +6,11 @@ const fs        = require('fs');
 const riot      = require('riot');
 const Module    = require('module');
 const path      = require('path');
-const Riothing  = clientRequire(publicPath + '/lib/riothing.js');
+
+let Riothing  = clientRequire(publicPath + '/lib/riothing.js');
 const content   = require(publicPath + '/content.json');
 
-const riothing  = new Riothing();
+let riothing  = new Riothing();
 
 const ROOT      = {
   VIEWS:  [],
@@ -23,8 +24,13 @@ exports.clientRequire = clientRequire;
 exports.initViews     = initViews;
 exports.compileRiot   = compileRiot;
 exports.route         = route;
+exports.reinit        = reinit;
 
-
+function reinit(req, res){
+  Riothing  = clientRequire(publicPath + '/lib/riothing.js');
+  riothing  = new Riothing();
+  init(publicPath, ROOT).then(() => route(req, res))
+}
 
 function route(req, res){
   const page    = req.originalUrl.split('/').pop();
@@ -32,8 +38,7 @@ function route(req, res){
   
   riothing.act('SET_ROUTE', page, splash);
   
-  //res.send(renderHTML(ROOT));
-  init(publicPath, ROOT).then(res.send(renderHTML(ROOT)));
+  res.send(renderHTML(ROOT));
 }
 
 function init(pubPath, root){

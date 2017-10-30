@@ -1,12 +1,11 @@
 <app>
-  <div class="ts:ft-1s {'blr:1px': splash}">
+  <div class="ts:ft-1s {'blr:1px': splash} h:100pc">
     <nav class="w:100pc ps:fx bg:white t:0 bs:1">
-      <a class="p:10px" href={route.link} onclick={ false && _setRoute(route) } each={route in routes}>{ route.name }</a>
+      <a class="p:10px" href={route.link} each={route in routes}>{ route.name }</a>
     </nav>
     
-    <main class="dp:flx ai:c h:100vh">
-      <div data-is={ route.view }></div>
-    </main>
+    <div data-is={ route.view } class="dp:flx fd:col h:100pc jc:c p-t:50px mxw:800px p-rl:2pc">
+    </div>
   </div>
   
   <comp-splash splash={splash} route={subroute}></comp-splash>
@@ -14,9 +13,11 @@
   <script>
     this.mixin('riothing');
     const { Route }   = this.models;
-    const { routes: storeRoutes }  = this.stores;
+    const { routes: storeRoutes, data: storeData }  = this.stores;
     
     Object.assign(this, new Opts(storeRoutes.get()));
+    
+    //console.log('PRINT STORES', this.stores);
     
     this.on('update', (data) => console.log('APP UPDATE', data));
     

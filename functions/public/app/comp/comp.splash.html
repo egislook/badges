@@ -3,10 +3,10 @@
     'trl:0 op:1 ts:op-500ms': opts.splash,
     'trl:100pc op:0 ts:op-500ms,tf-500ms-eio-500ms': !opts.splash,
   }">
-    <div data-is={opts.splash && opts.route.view} class="bg:white of:auto dp:flx ai:c bs:2 md-w,h:80pc w,h:96pc mdx-br:0-30px-0-0" />
+    <div data-is={opts.splash && opts.route.view} class="bg:white of:auto dp:flx fd:col h:100pc jc:c bs:2 md-w,h:80pc w,h:96pc mdx-br:0-30px-0-0" />
   </div>
   
-  <a href={opts.splash ? '?' : '?splash=todo'}
+  <a href={opts.splash ? '?' : '?splash=data'}
     class="p:20px br:50pc ps:fx bs:2 z:2 r:2pc ts:b {
       'bg:prim c:white b:2pc fu-plus': !opts.splash,
       'bg:white fu-cross b:90pc': opts.splash

@@ -49,8 +49,7 @@ function Riothing(data){
       stores.forEach((store) => this.setStore(parent[store](state)));
     //init route action
     route((page) => {
-      let query = new URLSearchParams(window.location.search);
-      this.act('SET_ROUTE', page, query.get('splash'));
+      this.act('SET_ROUTE', page, route.query().splash);
     });
 
     route.base('/');
@@ -84,7 +83,7 @@ function Riothing(data){
     console.log('Riothing Mixin', `
       init: this.mixin(\'riothing\')
       methods: ['act', 'track', 'store']
-      variables: ['models']
+      variables: ['models', 'stores']
     `);
     return {
       init: function(){

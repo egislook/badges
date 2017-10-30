@@ -1,10 +1,10 @@
 var fucss = {};
 
 fucss.watch = window.fucssWatch !== undefined ? window.fucssWatch : 0;
-fucss.init = window.fucssInit !== undefined ? window.fucssInit : true;
-fucss.anim = window.fucssAnim !== undefined ? window.fucssAnim : true;
-fucss.glob = window.fucssGlob !== undefined ? window.fucssGlob : true;
-fucss.fux = window.fucssFux !== undefined ? window.fucssFux : true;
+fucss.init  = window.fucssInit !== undefined  ? window.fucssInit  : true;
+fucss.anim  = window.fucssAnim !== undefined  ? window.fucssAnim  : true;
+fucss.glob  = window.fucssGlob !== undefined  ? window.fucssGlob  : true;
+fucss.fux   = window.fucssFux !== undefined   ? window.fucssFux   : true;
 fucss.debug = window.fucssDebug !== undefined ? window.fucssDebug : false;
 
 fucss.seps = {
@@ -267,6 +267,7 @@ fucss.values = {
   light: 'lighten',
   dark: 'darken',
   eio: 'ease-in-out',
+  pw: 'pre-wrap'
 };
 
 //version 0.6.8
@@ -558,7 +559,7 @@ fucss.generateStyling = function(opts){
   }
 
   function extractState(props){
-    var stateValue = props.length && props[0];
+    var stateValue = props.length > 1 && props[0];
     if(Object.keys(fucss.states).indexOf(stateValue) !== -1){
       return fucss.states[props.shift()];
     }
@@ -903,6 +904,7 @@ fucss.harvestClassesFromJsx = function(jsx){
 
 fucss.generateGlobalExtras = function(){
   var globalExtras = {
+    "html, body": 'min-height: 100%; height: 100%;',
     "body": 'margin: 0; text-align: center; border-width: 0;\
               font-family: "Helvetica Neue", "Calibri Light", Roboto, sans-serif;\
               -webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;letter-spacing: 0.02em;',
