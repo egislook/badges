@@ -1,255 +1,50 @@
 {
   "definitions": {
     "en": {
-      "fieldImagePlaceholder": "image size {width} x {height} url",
-      "text": "Note that this will simply add all attributes \nof obj2 to obj1 which might not be what you want if you still want to use the unmodified obj1. If you're using a framework that craps all over your prototypes then you have to get fancier with checks like hasOwnProperty, but that code will work for 99% of casessss.ss ggggssss",
-      "text2": "Careful: the variable \"settings\" will be modified, though. jQuery doesn't return a new instance.The reason for this (and for the naming) is that .extend() was developed to extend objects, rather than to munge stuff together. If you want a new object (e.g. settings is defaults you don't want to touch), you can always jQuery.extend({}, settings, options) testing",
-      "img": "image",
-      "fieldTextPlaceholder": "text between {min} and {max} chars"
-    },
-    "lt": {
-      "img": "nuotrauka",
-      "fieldTextPlaceholder": "teksto ilgis tarp {min} ir {max} symboliu"
+      "mainBreadcrumb": "/ BADGE HERE",
+      "mainTitle": "badges",
+      "mainDesc": "Hi, we’re a digital creative agency based in Los Angeles. We’re creatives driven by the synergy of design and technology.",
+      "mainSlogan": "We worked for Puma, Airbnb, Computer Arts, Nixon, Oglivy, Qlock Two, Adidas.",
+      "mainButton": "say hello",
+      
+      "subTitle": "Only is an award-winning strategy and design consultancy. Through research, strategy and design we connect brands with people in unique and compelling ways.",
+      "subDesc": "Each carried a strange banner swung from stem to stern above the upper works, and upon the prow of each was painted some odd device that gleamed in the sunlight and showed plainly even at the distance at which we were from the vessels.",
+      
+      "skillTitle1": "User Experience 1",
+      "skillDesc1": "Each carried a strange banner swung from stem to stern above the upper works, and upon the prow of each was painted some odd.",
+      "skillTitle2": "User Experience 2",
+      "skillDesc2": "Each carried a strange banner swung from stem to stern above the upper works, and upon the prow of each was painted some odd.",
+      "skillTitle3": "User Experience 3",
+      "skillDesc3": "Each carried a strange banner swung from stem to stern above the upper works, and upon the prow of each was painted some odd.",
+      
+      "journalButton": "view all journal",
+      
+      "alertTitle1": "Let’s talk about your amazing project",
+      "alertButton1": "get in touch",
+      "alertTitle2": "We’re looking for talented peoples like you",
+      "alertButton2": "apply now",
+      
+      "quickLinks": "Quick Links",
+      "followUs": "Follow us"
     }
-  },
-  "schemas": {
-    "route": {
-      "meta": {
-        "description": {
-          "max": "500",
-          "min": "10",
-          "type": "text"
-        },
-        "title": {
-          "max": "100",
-          "min": "2",
-          "type": "text"
-        }
-      },
-      "view": {
-        "max": "50",
-        "min": "2",
-        "type": "text"
-      },
-      "title": {
-        "max": "50",
-        "min": "2",
-        "type": "text"
-      },
-      "link": {
-        "max": "100",
-        "min": "1",
-        "type": "url"
-      },
-      "name": {
-        "max": "10",
-        "min": "2",
-        "type": "text"
-      }
-    },
-    "album": {
-      "title": {
-        "required": "true",
-        "max": "300",
-        "min": "3",
-        "type": "text"
-      },
-      "description": {
-        "required": "true",
-        "max": "300",
-        "min": "3",
-        "type": "text"
-      },
-      "img": {
-        "required": "true",
-        "height": "300",
-        "width": "300",
-        "type": "image"
-      },
-      "button": {
-        "route": {
-          "max": "10",
-          "min": "1",
-          "type": "text"
-        },
-        "link": {
-          "type": "url"
-        },
-        "title": {
-          "type": "text",
-          "max": "25",
-          "min": "2"
-        },
-        "icon": {
-          "class": {
-            "type": "text"
-          }
-        }
-      }
-    },
-    "todo": {
-      "task": {
-        "required": "true",
-        "max": "200",
-        "min": "5",
-        "type": "text"
-      },
-      "recorded": {
-        "required": "true",
-        "type": "date"
-      },
-      "updated": {
-        "type": "date"
-      },
-      "done": {
-        "type": "boolean"
-      },
-      "category": {
-        "options": {
-          "refactor": "Refactor",
-          "idea": "Idea",
-          "feature": "Feature",
-          "bug": "Bug"
-        },
-        "type": "option"
-      }
-    }
-  },
-  "testing": {
-    "text": "Some sort of text that no on ecaresssss asdas\nkeep it simple oneeeeee eee",
-    "button": {
-      "title": "button"
-    },
-    "img": "/assets/files/file-1505602686608-10.jpg"
   },
   "routes": [
     {
       "main": "true",
-      "fullscreen": "true",
-      "name": "main",
-      "link": "/",
-      "title": "poinout",
-      "view": "page-main",
-      "meta": {
-        "title": "poinout | main page",
-        "description": "Lets call it TODO"
-      }
+      "name": "main"
     },
     {
-      "name": "data",
-      "link": "/data",
-      "title": "Data",
-      "view": "page-data",
-      "meta": {
-        "title": "Poinject tree editor",
-        "description": "Poinject Editor is a web-based tool to view, edit, and format Poinject. By editing data you are editing content on the website directly.\nThis example demonstrates the following:\n\nLoading external schemas via ajax (using $ref)\nSetting the editor's value from javascript (try the Restore to Default button)\nValidating the editor's contents (try setting name to an empty string)\nMacro templates (try changing the city or state fields and watch the citystate field update automatically)\nEnabling and disabling editor fieldss"
-      }  
-    },
-    {
-      "name": "sandbox",
-      "link": "/sandbox",
-      "title": "Sandbox",
-      "view": "page-sandbox",
-      "meta": {
-        "title": "Lets call it Sandbox",
-        "description": "Test Edit Poinject Editor is a web-based tool to view, edit, and format Poinject. By editing data you are editing content on the website directly.\nThis example demonstrates the following:\n\nLoading external schemas via ajax (using $ref)\nSetting the editor's value from javascript (try the Restore to Default button)\nValidating the editor's contents (try setting name to an empty string)\nMacro templates (try changing the city or state fields and watch the citystate field update automatically)"
-      }
-    },
-    {
-      "name": "todo",
-      "link": "/todo",
-      "title": "Todo",
-      "view": "page-todo",
-      "meta": {
-        "title": "Lets call it TODO",
-        "description": "Lets call it TODO"
-      }
-    },
-    {
-      "fullscreen": "true",
-      "meta": {},
-      "name": "experiment",
-      "link": "/experiment",
-      "title": "Experiment",
-      "view": "page-experiment"
-    },
-    {
-      "name": "palette",
-      "link": "/palette",
-      "title": "Palette",
-      "view": "page-palette",
-      "meta": {
-        "title": "Poinout color palette",
-        "description": "This color palette comprises primary and accent colors that can be used for illustration or to develop your brand colors. They’ve been designed to work harmoniously with each other. The color palette starts with primary colors and fills in the spectrum to create a complete and usable palette for Android, Web, and iOS. Google suggests using the 500 colors as the primary colors in your app and the other colors as accents colors.\n\nThemes enable consistent app styling through surface shades, shadow depth, and ink opacity."
-      }
+      "name": "palette"
     }
   ],
-  "albums": {
-    "album0": {
-      "button": {
-        "route": "data",
-        "title": "Edit Data"
-      },
-      "description": "Build Flexible and beautiful web applications or sites\nin fashioned and quick way with Poinout.",
-      "title": "Meet Poinout,\nFlexible front-end toolkit sad",
-      "img": "/assets/files/file-1506779818817"
-    },
-    "album1": {
-      "title": "sunset here my friend.",
-      "img": "/assets/files/file-1506839021725"
-    },
-    "album2": {
-      "title": "Flowers here my friend and something a bit more\nSmall title huh? Edit works",
-      "img": "/assets/files/file-1505600801833-03.jpg"
-    },
-    "album3": {
-      "img": "/assets/files/file-1505600796703-02.jpg",
-      "title": "title for 3rd album"
-    },
-    "album4": {
-      "img": "/assets/files/file-1505600796703-02.jpg",
-      "title": {}
-    },
-    "album-1507841897821": {
-      "img": "/assets/files/file-1507841854348-12.jpg",
-      "title": "Green beutiful test",
-      "description": "Just a simple test",
-      "button": {
-        "route": "/sandbox",
-        "title": "visit sandbox",
-        "icon": {}
-      }
-    },
-    "album-1507885443558": {
-      "title": "Burning man Event,\nMorning",
-      "description": "Weird man standing on the branch, \neveryone is chilling after hard last night full of drugs and other shit",
-      "img": "https://i.imgur.com/A7TqRRT.jpg",
-      "button": {
-        "route": "/todo",
-        "icon": {}
-      }
-    }
-  },
-  "todo": "Feature: Fucss function value full support, comma support.\nFeature: Page transitions\nFix: text3 new line drop bug  \nRefactor: Navigation to make it more suitable for mobile\nRefactor: server side rendering (index.html is a tag with full server render features)\nFeature: schema data to poinject generator and auto container creator & cheker (eg: album -> albums)  \nFeature: UI support for boolean, options & multioptions (filtering) (support for text arrays), timestamp, date, time, range \nFeature: ability to restructurise schema in Adder (eg: renaming field changes children field name too)\nFeature: poinject value reference (path)\nRefactor: Page wrapper for global components like editor, modal, toast\nFix: Touchscreen text3 scrolling bug for every tap it calls click\nFeature: UI / UX upgrade for leaf movement\nFeature: dnd leaf to empty field\nFeature: leaf move to another leaf (change parent, ancestors, path of children)\nFeature: leaf changing position / sort\n\nFeature: express body sanitizer\nFeature: confirm action popup for delete / duplicate leaf\nFeature: button text & link edit\nFeature: Language support (dynamic / structure method)\nFeature: wrap-image. Wrapper works with yield. Editability.\nFeature: smart data structure / dynamic data\nFeature: make experimental todo\nFeature: fucss ability to set prim & sec fonts (by default set most efficient)\n---\nIdea: build SDK (browser / server) for poinject  (Inspiration: lowdb, json server) \nIdea: propriet path for poinject fields\nIdea: poinject parent value as variable $ref\nIdea: check router meta structure possibilities\nIdea: Reminder APP keep reminding the future you something\n ---\n(done) Feature: Fucss box shadow upgrade \n(done) Feature: Toast for messages please (animate it) \n(done) Fix: data tree update amount (3 updates for every action)\n(done) Upgrade: text3 to support on click editable / one line enter save\n(done) Refactor: elem-text to wrap-text. Wrapper works with yield. Editability.\n(done) Fix: text3 duplicated text issue\n(done) Feature: Implement hidden children number\n(done) Feature: UI leaf extend / collapse\n(done) Bug: incorrect ancestors list is generated\n(done) Bug: leaf delete needs to remove all children by ancestors\n(done) Bug: leaf create ancestors are incorrect (too much)\n(done) Bug: leaf duplicate ancestors are empty\n(done) Bug: leaf duplicate path is incorrect. (undefined. in front)\n(done) Bug: editing leaf children path is not changing\n(done) Feature: duplicate leaf\n(done) Feature: Gallery slideshow\n(done) add basic image uploading feature\n(done) fix delete bug. deletes only selected value and parent\n(done) add new field on top lvl\n(done) fix delete fn (value delete)",
-  "text2": "$def.text2",
-  "text": "$def.text",
-  "poinoutTitle": "Poinout",
-  "meta": {
-    "title": "poinout | main page",
-    "description": "small app example",
-    "image": "image.png",
-    "author": "noneedsystem",
-    "favicon": "/assets/ico/favicon.ico",
-    "url": "www.poinout.com"
-  },
-  "todos": {
-    "todo1": {
-      "task": "New beutiful task",
-      "recorded": "Fri Oct 13 2017 01:41:08 GMT+0530 (India Standard Time)"
-    },
-    "todo-1507844178615": {
-      "task": "New test",
-      "recorded": "Fri Oct 13 2017 03:06:17 GMT+0530 (India Standard Time)"
+  "metas": {
+    "main": {
+      "title": "$def.mainTitle",
+      "desc": "$def.mainDesc",
+      "image": "http://3xvudwwkhak19qo4l1l7dwxn.wpengine.netdna-cdn.com/broadwick/wp-content/uploads/sites/3/2017/03/mm1-1.jpg",
+      "author": "egis",
+      "favicon": "favicon.ico",
+      "url": "www.poinout.com"
     }
   }
 }

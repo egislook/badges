@@ -2,7 +2,7 @@
   
   <div class="md-dp:flx jc:sb fs:90pc">
     <div each={skill in skills} class="bg:white md-mxw:31pc m:0 m-b:30px">
-      <img src={skill.image} class="dp:bk w:100pc" />
+      <img src={skill.image} alt={skill.title} class="dp:bk w:100pc" />
       <h3 class="p:35px p-b:20px">{skill.title}</h3>
       <p class="p:35px p-t:0">{skill.desc}</p>
     </div>
@@ -13,17 +13,17 @@
       skills: [
         { 
           image: 'http://3xvudwwkhak19qo4l1l7dwxn.wpengine.netdna-cdn.com/broadwick/wp-content/uploads/sites/3/2017/04/s_1-300x192.png',
-          title: 'User Experience',
+          title: 'User Experience 1',
           desc: 'Each carried a strange banner swung from stem to stern above the upper works, and upon the prow of each was painted some odd.'
         },
         { 
           image: 'http://3xvudwwkhak19qo4l1l7dwxn.wpengine.netdna-cdn.com/broadwick/wp-content/uploads/sites/3/2017/04/s_2-300x192.png',
-          title: 'User Experience',
+          title: 'User Experience 2',
           desc: 'Each carried a strange banner swung from stem to stern above the upper works, and upon the prow of each was painted some odd.'
         },
         { 
           image: 'http://3xvudwwkhak19qo4l1l7dwxn.wpengine.netdna-cdn.com/broadwick/wp-content/uploads/sites/3/2017/04/s_3-300x192.png',
-          title: 'User Experience',
+          title: 'User Experience 3',
           desc: 'Each carried a strange banner swung from stem to stern above the upper works, and upon the prow of each was painted some odd.'
         }
       ]

@@ -1,10 +1,12 @@
 {
   "name": "functions",
   "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "start": "firebase serve -o $IP -p $PORT --only hosting,functions"
+  },
   "dependencies": {
-    "firebase-admin": "~5.4.0",
     "firebase-functions": "^0.7.0",
-    "riot": "^3.7.3"
+    "riothing": "0.0.1"
   },
   "private": true
 }
