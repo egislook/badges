@@ -5,8 +5,9 @@
     "start": "firebase serve -o $IP -p $PORT --only hosting,functions"
   },
   "dependencies": {
+    "firebase-admin": "latest",
     "firebase-functions": "^0.7.0",
-    "riothing": "0.0.1"
+    "riothing": "0.0.5"
   },
   "private": true
 }
