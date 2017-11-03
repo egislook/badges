@@ -1,4 +1,5 @@
 /functions/node_modules
+/functions/firebase-debug.log
 npm-debug.log
 
 //firebase serve -o $IP -p $PORT --only hosting,functions
