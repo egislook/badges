@@ -22,7 +22,7 @@
 		<!-- stylesheets -->
 		<link rel="stylesheet" href="https://cdn.rawgit.com/noneedsystem/fuico/0.0.8/style.css">
 		<link href="https://fonts.googleapis.com/css?family=Questrial" rel="stylesheet">
-		<link rel="stylesheet" href="/style.css"> 
+		<!--<link rel="stylesheet" href="/style.css"> -->
 		<!-- prefetch -->
 		<link rel="prefetch" href="/content.json">
 
@@ -34,13 +34,14 @@
     <tag-app></tag-app>
 		<!-- js libraries -->
 		<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.2/lodash.min.js" defer></script>-->
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js" defer></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/riot/3.7.2/riot.min.js" defer></script>
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/riot-route/3.1.1/route.min.js" defer></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/riot/3.7.2/riot+compiler.min.js" defer></script>
-		<script type="text/javascript" src="https://cdn.rawgit.com/noneedsystem/riothing/0.0.1/riothing.js" defer></script>
-		<!--<script type="text/javascript" src="https://cdn.rawgit.com/noneedsystem/fucss/0.6.9a/fucss.js" defer></script>-->
+		<!--<script type="text/javascript" src="https://cdn.rawgit.com/noneedsystem/riothing/v0.0.6/riothing.js" defer></script>-->
+		<script type="text/javascript" src="https://cdn.rawgit.com/noneedsystem/fucss/0.6.9a/fucss.js" defer></script>
 		<!--<script type="text/javascript" src="/lib/fucss.js" defer></script>-->
-		<!--<script type="text/javascript" src="/lib/riothing.js" defer></script>-->
+		<script type="text/javascript" src="/lib/riothing.js" defer></script>
 		
 		<!-- riothing stores -->
 		<script if={STORES} each={store in STORES} type="text/javascript" src={store.path} defer></script>
@@ -67,7 +68,7 @@
 		    CLIENT: ''
 		  };
 		  //{ meta: storeRoutes.get('meta') }
-		  Object.assign(this, this.default, this.opts);
+		  Object.assign(this, this.default, this.opts, { meta: storeRoutes.get('meta') });
 		  
 		</script>
 

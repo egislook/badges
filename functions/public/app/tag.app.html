@@ -1,34 +1,41 @@
 <tag-app>
   <div class="ts:ft-1s {'blr:1px': splash} h:100pc">
-    <elem-header />
-    <div data-is={ route.view } class="dp:flx fd:col h:100pc jc:c p-t:80px" />
+    <elem-header langs={langs} lang={lang} on-set-language={action('SET_LANGUAGE')} />
+    <div data-is={ route.view } meta={meta} class="dp:flx fd:col h:100pc jc:c p-t:80px" />
   </div>
   
   <script>
     this.mixin('riothing');
-    const { Route }   = this.models;
-    const { routes: storeRoutes, data: storeData }  = this.stores;
+    const { Route } = this.models;
+    const { routes: storeRoutes, definitions: storeDefinitions }  = this.stores;
+    const { langs, lang } = storeDefinitions.get();
     
-    Object.assign(this, new Opts(storeRoutes.get()));
+    Object.assign(this, new Opts(Object.assign({}, storeRoutes.get(), { langs, lang })));
+    //console.log(storeDefinitions.get(), storeRoutes.get());
     
     //console.log('PRINT STORES', this.stores);
     
     this.on('update', (data) => console.log('APP UPDATE', data));
     
-    storeRoutes.track('ROUTE_STATE', (state) => this.update(new Opts(state) ));
+    storeRoutes.track('ROUTE_STATE', (state) => this.update(new Opts(state, this) ));
+    storeDefinitions.track('DEFINITIONS_STATE', (state) => this.update(new Opts(Object.assign({}, storeRoutes.get(), state), this) ));
     
-    function Opts(opts = {}){
-      this.ready  = opts.ready  || false;
-      this.page   = opts.page   || 'main';
-      this.splash = opts.splash || false;
+    function Opts(opts = {}, prev = {}){
+      this.ready  = opts.ready  || prev.ready   || false;
+      this.page   = opts.page   || prev.page    || 'main';
+      this.splash = opts.splash || prev.splash  || false;
+      this.meta   = opts.meta   || prev.meta;
       
-      this.routes = opts.routes && opts.routes.map((route) => new Route(route)) || 
+      this.routes = opts.routes && opts.routes.map((route) => new Route(route)) || prev.routes ||
       [
         new Route({ name: 'main', main: true }),
         new Route({ name: 'todo' })
       ];
       this.route    = this.routes.filter((route) => route.name === this.page).shift();
-      this.subroute = opts.subroute;
+      this.subroute = opts.subroute || prev.subroute;
+      
+      this.lang   = opts.lang   || prev.lang;
+      this.langs  = opts.langs  || prev.langs;
       
       return this;
     }

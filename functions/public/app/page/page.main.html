@@ -3,7 +3,7 @@
     
     <div class="p:0-1pc mxw:1000px">
       <small class="p-t:60px p-b:40px dp:bk fs:75pc ls:0.3npx tr:uc">/ Badge Here</small>
-      <h1 class="md-fs:380pc fs:250pc lh:1.4 fw:400">Hi, we’re a digital creative agency based in Los Angeles. We’re creatives driven by the synergy of design and technology.</h1>
+      <h1 class="md-fs:380pc fs:250pc lh:1.4 fw:400">{opts.meta.desc || act('GET_DEF', 'mainDesc')}</h1>
       <p class="fs:150pc p-t:40px">We worked for Puma, Airbnb, Computer Arts, Nixon, Oglivy, Qlock Two, Adidas.</p>
       <elem-button class="m-t:40px dp:bk">say hello</elem-button>
     </div>
@@ -44,4 +44,12 @@
       <elem-footer />
     </div>
   </div>
+  <script>
+    this.mixin('riothing');
+    console.log(opts);
+    
+    //const { meta } = this.store('routes').get();
+    //this.meta = opts.meta;
+    
+  </script>
 </page-main>

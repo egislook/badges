@@ -5,14 +5,15 @@ function storeRoutes(initState){
     state:      initState,
     actions:    new Actions(),
     models:     { Route, Meta },
-    model:      RoutesState,
+    model:      StateRoutes,
   };
   
   function Actions(){
     return {
-      'SET_ROUTE': function(page, splash){
-        let routes = this.get('routes');
+      'SET_ROUTE': function({ page, query, cookies }){
+        let langState = this.act('SET_LANGUAGE', cookies && cookies.lang);
         
+        let routes = this.get('routes');
         let route = routes.filter((route) => route.name === page);
         if(route.length !== 1)
           route = route.filter((route) => route.main);
@@ -24,14 +25,12 @@ function storeRoutes(initState){
         let state = this.set({
           ready: !this.SERVER,
           page: routeName,
-          splash,
+          splash: query && query.splash,
         });
         //console.log(state);
         //set client title
-        if(!this.SERVER){
-          parent.route(parent.location.href.replace(parent.location.origin, ''), this.get('meta.title'));
-        }
-        console.log('SET_ROUTE', routeName, splash);
+          
+        //console.log('SET_ROUTE', routeName, 'query:', query, state);
         
         this.trigger('ROUTE_STATE', state);
         return state;
@@ -48,18 +47,20 @@ function storeRoutes(initState){
     }
   }
   
-  function RoutesState(data = {}, prev = {}){
-    this.routes = data.routes && data.routes.map((route) => new Route(route)) || prev.routes ||
-    [
-      new Route({ name: 'main', main: true }),
-      new Route({ name: 'todo' }),
-      new Route({ name: 'test' })
-    ];
-    
-    this.metas = data.metas || prev.metas || {
-      main: new Meta(),
-      todo: new Meta({ title: 'todo poinout title'})
+  function StateRoutes(data = {}, prev = {}, def, act){
+    def = def || {
+      routes: [
+        { main: true, name: 'main' },
+        { name: 'todo' }
+      ],
+      metas: {
+        main: { title: 'app main title' },
+        todo: { title: 'app todo title' },
+      }
     };
+    
+    this.routes = getRoutes(data.routes || prev.routes || def.routes);
+    this.metas  = getMetas(data.metas || prev.metas || def.metas, act);
     
     this.ready  = data.ready  || prev.ready   || false;
     this.page   = data.page   || prev.page    || 'main';
@@ -70,6 +71,18 @@ function storeRoutes(initState){
     this.meta     = this.metas[this.page] || this.metas['main'];
     this.subroute = this.splash && this.routes.filter((subroute) => subroute.name === this.splash).shift();
     
+    function getMetas(metas, act){
+      metas = Object.assign({}, metas);
+      for(let name in metas){
+        metas[name] = new Meta(metas[name]);
+      }
+      return metas;
+    }
+    
+    function getRoutes(routes){
+      return routes.slice().map( route => new Route(route));
+    }
+    
     return this;
   }
   
@@ -78,13 +91,16 @@ function storeRoutes(initState){
     this.main = data.main || false;
     this.link = data.link || this.main && '/' || '/' + this.name;
     this.view = data.view || 'page-' + this.name;
+    this.test = '$def.tadam';
     
     return this;
   }
   
   function Meta(data = {}){
-    this.title    = data.title    || 'Poinout app';
-    this.desc     = data.desc     || 'Simple app description';
+    //console.log(data, act, act && act('GET_DEF', data.title));
+    //console.log(data.title, data.desc);
+    this.title    = data.title || 'Poinout app';
+    this.desc     = data.desc  || 'Simple app description';
     this.author   = data.author   || 'egis';
     this.image    = data.image    || '';
     this.url      = data.url      || '';

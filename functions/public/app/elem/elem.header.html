@@ -2,6 +2,13 @@
   <header class="h:80px dp:flx ai:c bg:white ps:fx w:100pc t,l:0 jc:sb p-rl:3pc z:1 bs:1">
     <a href="#" class="fw:600 tr:uc fs:130pc ls:2px m:0">Badges</a>
     
+    
+    <span class="m-r:0">
+      <a each={lang in opts.langs} onclick={handleClick(lang.name)} class="{'bg:prim c:white': lang.name === opts.lang, 'p-tb:5px p-rl:10px br:5px': true}">
+        {lang.name}
+      </a>
+    </span>
+    
     <span class="m:0 p:10px_i fs:130pc">
       <i class="fu-search" />
       <i class="fu-menu" />
@@ -11,4 +18,9 @@
       <a if={false} class="p:10px" href={route.link} each={route in routes}>{ route.name }</a>
     </nav>
   </header>
+  <script>
+    this.handleClick = (lang) => (e) =>
+      opts.onSetLanguage(lang);
+    console.log(opts);
+  </script>
 </elem-header>

@@ -26,6 +26,10 @@
       
       "quickLinks": "Quick Links",
       "followUs": "Follow us"
+    },
+    "lt": {
+      "mainTitle": "Zetonai",
+      "mainDesc": "Sveiki, mes esame skaitmeninės kūrybinės agentūros, įsikūrusios Los Andžele. Mes esame kūrėjai, kuriuos sukėlė dizaino ir technologijų sinergija."
     }
   },
   "routes": [
