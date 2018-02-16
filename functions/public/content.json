@@ -38,7 +38,11 @@
       "name": "main"
     },
     {
-      "name": "palette"
+      "name": "journal"
+    },
+    {
+      "name": "error",
+      "clean": "true"
     }
   ],
   "metas": {

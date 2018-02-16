@@ -27,13 +27,19 @@ function storeRoutes(initState){
           page: routeName,
           splash: query && query.splash,
         });
+        
         //console.log(state);
         //set client title
           
-        //console.log('SET_ROUTE', routeName, 'query:', query, state);
+        console.log('SET_ROUTE', routeName, 'query:', page, query, state);
         
         this.trigger('ROUTE_STATE', state);
         return state;
+      },
+      
+      'SET_TITLE': function(){
+        if(!this.SERVER)
+          parent.route(parent.location.href.replace(parent.location.origin, ''), this.get('meta.title'));
       },
       
       'SET_SOMETHING': function(something, cb){ 
@@ -87,11 +93,12 @@ function storeRoutes(initState){
   }
   
   function Route(data = {}){
-    this.name = data.name || 'none';
-    this.main = data.main || false;
-    this.link = data.link || this.main && '/' || '/' + this.name;
-    this.view = data.view || 'page-' + this.name;
-    this.test = '$def.tadam';
+    this.name   = data.name || 'none';
+    this.main   = data.main || false;
+    this.link   = data.link || this.main && '/' || '/' + this.name;
+    this.view   = data.view || 'page-' + this.name;
+    this.clean  = data.clean;
+    this.test   = '$def.tadam';
     
     return this;
   }

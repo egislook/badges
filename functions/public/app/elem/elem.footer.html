@@ -1,12 +1,14 @@
 <elem-footer>
-  <footer class="mxw:1000px md-dp:flx ta:l p:70px-0 m:0_all jc:sb fs:90pc">
-    <div each={section in sections}>
-      <h2 class="p:20px-0">{section.title}</h2>
-      <p if={section.cols} each={col in section.cols}>{col}</p>
-      <a if={section.links} each={link in section.links} href="#" class="dp:bk p-tb:3px">{link}</a>
-    </div>
-    
-  </footer>
+  <div class="bg:black c:white p:0-1pc">
+    <footer class="mxw:1000px md-dp:flx ta:l p:70px-0 m:0_all jc:sb fs:90pc">
+      <div each={section in sections}>
+        <h2 class="p:20px-0">{section.title}</h2>
+        <p if={section.cols} each={col in section.cols}>{col}</p>
+        <a if={section.links} each={link in section.links} href="#" class="dp:bk p-tb:3px">{link}</a>
+      </div>
+      
+    </footer>
+  </div>
   
   <script>
     this.default = {

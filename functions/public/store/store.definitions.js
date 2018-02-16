@@ -15,7 +15,7 @@ function storeDefinitions(initState){
           return value;
         
         //console.log('GET_DEF', this.get('def'), value);
-        console.log('DEFINITION STATE', this.get('lang'));
+        //console.log('DEFINITION STATE', { lang: this.get('lang'), value });
         return value.indexOf('$def.') === 0
           ? this.get(value.replace('$', ''))
           : this.get('def.' + value) || value;
@@ -27,6 +27,7 @@ function storeDefinitions(initState){
         let state = this.set({ lang });
         
         !this.SERVER && Cookies.set('lang', state.lang);
+        this.act('SET_TITLE');
         //this.restate(['routes']);
         //console.log(this.store('routes').get());
         

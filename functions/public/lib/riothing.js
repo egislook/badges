@@ -66,7 +66,7 @@ function Riothing(data){
   //Initiation
   this.initClient = (stores, state) => {
     //init route action
-    route(page => this.act('SET_ROUTE', page, route.query()));
+    route(page => this.act('SET_ROUTE', { page, query: route.query() }));
     route.base('/');
     route.start(1);
     // init app

@@ -1,7 +1,8 @@
 <tag-app>
   <div class="ts:ft-1s {'blr:1px': splash} h:100pc">
-    <elem-header langs={langs} lang={lang} on-set-language={action('SET_LANGUAGE')} />
-    <div data-is={ route.view } meta={meta} class="dp:flx fd:col h:100pc jc:c p-t:80px" />
+    <elem-header if={!route.clean} routes={routes} langs={langs} lang={lang} on-set-language={action('SET_LANGUAGE')} />
+    <div data-is={ route.view } meta={meta} class="dp:flx fd:col jc:c p-t:80px" />
+    <elem-footer if={!route.clean} />
   </div>
   
   <script>

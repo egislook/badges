@@ -1,7 +1,6 @@
 <elem-header>
   <header class="h:80px dp:flx ai:c bg:white ps:fx w:100pc t,l:0 jc:sb p-rl:3pc z:1 bs:1">
-    <a href="#" class="fw:600 tr:uc fs:130pc ls:2px m:0">Badges</a>
-    
+    <a each={ route in opts.routes } href={route.link} class="fw:600 tr:uc fs:130pc ls:2px m:0 m-r:10px">{route.name}</a>
     
     <span class="m-r:0">
       <a each={lang in opts.langs} onclick={handleClick(lang.name)} class="{'bg:prim c:white': lang.name === opts.lang, 'p-tb:5px p-rl:10px br:5px': true}">
