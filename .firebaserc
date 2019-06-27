@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "badge-here"
+    "default": "badge-here",
+    "here": "badge-here"
   }
 }

@@ -3,5 +3,7 @@
 npm-debug.log
 
 //firebase serve -o $IP -p $PORT --only hosting,functions
+//firebase deploy -P badge-here
+//DONT FORGET clear CACHE after deploy
 
 //node -e "require('./riothing').render('../public').then(console.log)"
